@@ -5,6 +5,14 @@ RAW_PATH = "data/raw/prices.csv"
 CLEAN_DIR = "data/clean"
 OUT_NAME = "prices_clean.csv"
 
+def split_train_test(df):
+    train_end = df.index[-30]  # Last 30 days for testing
+    
+    train_data = df[df.index < train_end]
+    test_data = df[df.index >= train_end]
+    
+    return train_data, test_data
+
 def clean_data(raw_path=RAW_PATH):
 
     os.makedirs(CLEAN_DIR, exist_ok=True)

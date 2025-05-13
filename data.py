@@ -31,14 +31,6 @@ def fetch_data(tickers, start_date, end_date):
     print(f"Raw data saved to {out_path}")
     return out_path
 
-def split_train_test(df):
-    train_end = df.index[-30]  # Last 30 days for testing
-    
-    train_data = df[df.index < train_end]
-    test_data = df[df.index >= train_end]
-    
-    return train_data, test_data
-
 if __name__ == "__main__":
     start_date, split_date, end_date = get_train_test_dates()
     fetch_data(sp500_tech, start_date, end_date)
