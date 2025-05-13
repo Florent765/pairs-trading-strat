@@ -10,19 +10,25 @@ def clean_data(raw_path=RAW_PATH):
     os.makedirs(CLEAN_DIR, exist_ok=True)
 
     # Load
-
     df = pd.read_csv(raw_path, index_col=0, parse_dates=True)
 
     # Clean
-
     df = df.ffill().bfill()
 
-    # Save
+    # Split
+    train_data, test_data = split_train_test(df)
 
-    out_path = os.path.join(CLEAN_DIR, OUT_NAME)
-    df.to_csv(out_path)
-    print(f"Clean data saved to {out_path}")
-    return out_path
+    # Save
+    train_path = os.path.join(CLEAN_DIR, "train_" + OUT_NAME)
+    test_path = os.path.join(CLEAN_DIR, "test_" + OUT_NAME)
+    
+    train_data.to_csv(train_path)
+    test_data.to_csv(test_path)
+    
+    print(f"Training data saved to {train_path}")
+    print(f"Testing data saved to {test_path}")
+    
+    return train_path, test_path
 
 if __name__ == "__main__":
     clean_data()

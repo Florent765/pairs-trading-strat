@@ -1,5 +1,6 @@
 import os
 import yfinance as yf
+from datetime import datetime, timedelta
 
 RAW_DIR = "data/raw"
 
@@ -12,6 +13,13 @@ sp500_tech = [
     "HPQ", "VRSN"
 ]
 
+def get_train_test_dates():
+    end_date = datetime.now()
+    start_date = end_date - timedelta(days=180)  # Last 6 months
+    train_test_split = end_date - timedelta(days=30)  # Last month for testing
+    
+    return start_date.strftime('%Y-%m-%d'), train_test_split.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d')
+
 def fetch_data(tickers, start_date, end_date):
     # Download historical data
     os.makedirs(RAW_DIR, exist_ok=True)
@@ -23,6 +31,14 @@ def fetch_data(tickers, start_date, end_date):
     print(f"Raw data saved to {out_path}")
     return out_path
 
+def split_train_test(df):
+    train_end = df.index[-30]  # Last 30 days for testing
+    
+    train_data = df[df.index < train_end]
+    test_data = df[df.index >= train_end]
+    
+    return train_data, test_data
+
 if __name__ == "__main__":
-    # Example invocation
-    fetch_data(sp500_tech, "2020-05-01", "2025-05-01")
+    start_date, split_date, end_date = get_train_test_dates()
+    fetch_data(sp500_tech, start_date, end_date)
