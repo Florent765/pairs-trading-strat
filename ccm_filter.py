@@ -27,5 +27,5 @@ def knn_indices(X, k):
     nbr = NearestNeighbors(n_neighbors=k).fit(X)
     return nbr.kneighbors(X, return_distance=False)
 
-def ccm_cross_map(x, y, E, tau, k):
-    X, Y = embed(x, E, tau), embed(y, E, tau)
+#def ccm_cross_map(x, y, E, tau, k):
+#    X, Y = embed(x, E, tau), embed(y, E, tau)
