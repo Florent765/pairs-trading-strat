@@ -10,7 +10,7 @@ os.makedirs("results", exist_ok=True)
 prices_test = pd.read_csv("data/clean/test_prices_clean.csv", index_col=0, parse_dates=True)
 prices_train = pd.read_csv("data/clean/train_prices_clean.csv", index_col=0, parse_dates=True)
 
-pairs = pd.read_csv("data/processed/universal_pairs_t.csv")
+pairs = pd.read_csv("data/processed/universal_pairs.csv")
 
 results = []
 for _, row in pairs.iterrows():
