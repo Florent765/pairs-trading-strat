@@ -2,10 +2,10 @@ import pandas as pd
 from cointegration import scan_pairs
 from ccm_filter   import filter_ccm
 
-# 1) Load & split
+# Load
 df = pd.read_csv("data/clean/train_prices_clean.csv", index_col=0, parse_dates=True)
 
-# 2) Linear shortlist
+# Linear shortlist
 pairs_lin = scan_pairs(df, p=0.05)
 pairs_lin = pd.DataFrame(
     pairs_lin,
@@ -13,7 +13,7 @@ pairs_lin = pd.DataFrame(
 )
 print(f"Engle–Granger found {len(pairs_lin)} pairs")
 
-# 3) Hyperparameter grid search on df_train
+# Hyperparameter grid search on df_train
 r0 = 0.8
 best = {"score": -1}
 for E in [3,4,5,6]:
