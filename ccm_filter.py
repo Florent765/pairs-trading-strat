@@ -10,9 +10,9 @@ OUT_DIR = "data/processed"
 OUT_FILE = "pairs_train.csv"
 
 # Hyperparameters
-E = 2 # embedding dimension
+E = 4 # best embedding dimension
 TAU = 1 # delay
-K = 8 # neighbors
+K = 5 # best neighbors
 R_TRESHOLD = 0.8 # minimum cross-map skill
 
 def embed(x, E, tau=1):
@@ -69,17 +69,17 @@ def ccm_cross_map(x, y, E, tau, k):
 def cross_map_skill(true, pred):
     return pearsonr(true, pred)[0]
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     # Load
-    df_train = pd.read_csv(PRICES_CLEAN)
-    pairs = pd.read_csv(PAIRS_FILE)
-
+    #df_train = pd.read_csv(PRICES_CLEAN)
+    #pairs = pd.read_csv(PAIRS_FILE)
+def filter_ccm(df, pairs, E, tau, k, r_tresh):
     good = []
 
     for _, row in pairs.iterrows():
         t1, t2 = row["stock1"], row["stock2"]
 
-        x_train, y_train = df_train[t1].values, df_train[t2].values
+        x_train, y_train = df[t1].values, df[t2].values
 
         x_pred, y_pred = ccm_cross_map(x_train, y_train, E, TAU, K)
 
@@ -96,10 +96,11 @@ if __name__ == "__main__":
         if r_x > R_TRESHOLD and r_y > R_TRESHOLD:
             good.append((t1, t2, r_x, r_y))
 
+    return good
     # Save
-    os.makedirs(OUT_DIR, exist_ok=True)
-    out = pd.DataFrame(good, columns=["stock1","stock2","r_xy","r_yx"])
-    out.to_csv(os.path.join(OUT_DIR, OUT_FILE), index=False)
+    #os.makedirs(OUT_DIR, exist_ok=True)
+    #out = pd.DataFrame(good, columns=["stock1","stock2","r_xy","r_yx"])
+    #out.to_csv(os.path.join(OUT_DIR, OUT_FILE), index=False)
 
-    print(f"In-sample CCM-filtered pairs saved to {OUT_DIR}/{OUT_FILE}")
-    print(out)
+    #print(f"In-sample CCM-filtered pairs saved to {OUT_DIR}/{OUT_FILE}")
+    #print(out)
