@@ -1,8 +1,9 @@
 import os
+import numpy as np
 import pandas as pd
 from joblib import load
 from model import compute_zscore, create_pred_features, generate_signals, construct_spread
-from backtest import compute_pnl, evaluate
+from backtest import compute_pnl, evaluate, backtest_with_stop
 
 os.makedirs("results", exist_ok=True)
 
@@ -45,19 +46,25 @@ for _, row in pairs.iterrows():
     )
 
     # 6. Backtest
-    pnl_curve, daily_ret = compute_pnl(spread_te.loc[X_te.index], signals)
+    pnl_curve, daily_ret = compute_pnl(spread_te.loc[X_te.index], signals, 0.1)
+
     sharpe, wl_ratio = evaluate(daily_ret)
     trades = signals.abs().sum()
+    running_max = pnl_curve.cummax()
+    drawdown = (pnl_curve - running_max) / running_max
+    max_dd = drawdown.min()
 
     results.append({
         'pair': f"{A}-{B}",
         'sharpe': round(sharpe, 3),
         'wl_ratio': round(wl_ratio, 2),
-        'num_trades': int(trades)
+        'num_trades': int(trades),
+        'max_drawdown': round(max_dd, 2)
     })
 
     # Optionally: save each PnL curve or signals
     pnl_curve.to_csv(f"results/pnl-{A}-{B}.csv")
+    daily_ret.to_csv(f"results/dailyret-{A}-{B}.csv")
     print(f" → {A}/{B}: Sharpe={sharpe:.2f}, W/L={wl_ratio:.2f}")
 
 # 7. Summarize all pairs

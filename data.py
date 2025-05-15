@@ -15,7 +15,7 @@ sp500_tech = [
 
 def get_train_test_dates():
     end_date = datetime.now()
-    start_date = end_date - timedelta(days=240)  # Last 6 months
+    start_date = end_date - timedelta(days=540)  # Last 6 months
     
     return start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d')
 

@@ -6,7 +6,7 @@ CLEAN_DIR = "data/clean"
 OUT_NAME = "prices_clean.csv"
 
 def split_train_test(df):
-    train_end = df.index[-30]  # Last 30 days for testing
+    train_end = df.index[-90]  # Last 30 days for testing
     
     train_data = df[df.index < train_end]
     test_data = df[df.index >= train_end]
