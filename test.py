@@ -57,7 +57,7 @@ for _, row in pairs.iterrows():
     })
 
     # Optionally: save each PnL curve or signals
-    pnl_curve.to_csv(f"results/pnl_{A}_{B}.csv")
+    pnl_curve.to_csv(f"results/pnl-{A}-{B}.csv")
     print(f" → {A}/{B}: Sharpe={sharpe:.2f}, W/L={wl_ratio:.2f}")
 
 # 7. Summarize all pairs
