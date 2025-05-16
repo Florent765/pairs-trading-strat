@@ -50,7 +50,7 @@ This project implements a machine learning–driven **statistical arbitrage stra
 
 | Metric           | Value (Top Pairs)     |
 |------------------|-----------------------|
-| Sharpe Ratio     | Up to **2.5**         |
+| Sharpe Ratio     | Up to **1.7**         |
 | Win/Loss Ratio   | > **1.2**             |
 | Max Drawdown     | Controlled via stop-loss |
 | Benchmark        | Strategy competitive vs SPY in volatile regimes |
