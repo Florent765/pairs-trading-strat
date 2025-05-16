@@ -1,32 +1,30 @@
 # Pairs Trading Strategy with Machine Learning and Cointegration Filtering
 
-This project implements a machine learning–driven **statistical arbitrage strategy** for trading **mean-reverting equity pairs**. The full pipeline includes pair selection via **cointegration tests**, feature engineering on spread dynamics, ML-based signal generation, and a robust backtesting framework with performance diagnostics.
 
-> ✅ Designed for recruiters: This project demonstrates applied machine learning, financial modeling, and performance evaluation on real market data.
+This project implements a machine learning–driven **statistical arbitrage strategy** for trading **mean-reverting equity pairs**. The full pipeline includes cointegration testing, nonlinear dependency filtering, ML-based signal generation, and a backtesting engine with risk controls.
 
 ---
 
-## 🔧 Tools & Technologies
+## Tools & Technologies
 
 - **Python**, **Pandas**, **NumPy**, **scikit-learn**, **statsmodels**
-- **Random Forest Classifier** for binary prediction
-- **Cointegration filtering** with ADF and CCM
+- **Random Forest Classifier** for reversion prediction
+- **Cointegration** filtering (Engle-Granger + ADF) + **CCM-KNN** skill score
 - **Backtesting** with transaction costs, stop-loss, and Sharpe/drawdown metrics
 - **Matplotlib**, **Seaborn** for equity curves and diagnostics
 
 ---
 
-## 💡 Strategy Overview
+## Strategy Overview
 
 1. **Pair Selection**
    - Select stock pairs from a broad universe (e.g. S&P 500)
-   - Filter using **Augmented Dickey-Fuller (ADF)** and **Canonical Correlation Measure (CCM)** to find cointegrated pairs
-
+   - Apply **Engle-Granger test** with **ADF** to identify cointegrated pairs
+   - Refine selection using **Convergent Cross Mapping (CCM)** and **K-Nearest Neighbors (KNN)** to retain only the most dynamically coupled pairs
+     
 2. **Spread Construction**
    - Fit OLS regression:  
-     \[
-     y_t = \alpha + \beta x_t \Rightarrow \text{spread}_t = y_t - (\alpha + \beta x_t)
-     \]
+     y_t = α + β x_t → spread_t = y_t − (α + β x_t)
    - Normalize the spread using a rolling 60-day **z-score**
 
 3. **Feature Engineering**
@@ -44,32 +42,22 @@ This project implements a machine learning–driven **statistical arbitrage stra
      - **Win/loss ratio**
      - **Max drawdown**
      - **Daily return distribution**
-   - Compare strategy to **SPY benchmark** and a **randomized baseline**
+   - Compare strategy to **SPY benchmark**
 
 ---
 
-## 📊 Key Results
+## Key Results
 
 | Metric           | Value (Top Pairs)     |
 |------------------|-----------------------|
 | Sharpe Ratio     | Up to **2.5**         |
 | Win/Loss Ratio   | > **1.2**             |
 | Max Drawdown     | Controlled via stop-loss |
-| Random vs ML     | ML significantly outperformed random baseline |
 | Benchmark        | Strategy competitive vs SPY in volatile regimes |
 
 ---
 
-## 📷 Notebook Highlights
-
-- Equity curves: strategy vs SPY and randomized baseline  
-- Top 5 & worst 3 pair performance  
-- Portfolio drawdown and daily return histogram  
-- Confusion matrix and ROC curves for model evaluation
-
----
-
-## 🚀 How to Run
+## How to Run
 
 1. Clone the repository
 2. Install dependencies:
